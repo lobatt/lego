@@ -1,0 +1,121 @@
+snippet pack
+	package ${1:name}
+snippet import
+	import (
+		"${1:module}"
+	)
+
+snippet main
+	func main() {
+	}
+snippet func
+	func ${1}(${2} ${3}) ${4} {
+		${5}
+	}
+
+snippet importtest
+	import (
+		"log"
+		"testing"
+	)
+
+snippet testf
+	func Test${1:Func}(t *testing.T) {
+		cases := []ut.TCase {
+			{
+				[]ut.TInput{},
+				[]ut.TExpect{},
+			},
+		}
+
+		ut.RunTestCases(t,
+		func() () {
+			return
+		},
+		cases...
+		)
+	}
+
+snippet functo
+	func (p *${1:Type}) ${2:FuncName}(${3}) ${4}{
+	}
+snippet struct
+	type ${1:StructName} struct {
+		${2:varname} ${3:type}
+	}
+
+snippet new
+	func New${1:Type}() *$1 {
+		return &$1{}
+	}
+
+snippet newlog
+	logfile, err := os.OpenFile("${1:filename}",os.O_RDWR|os.O_CREATE, 755);
+	if err != nil {
+		fmt.Printf("Failed to open log file $1: %v", err)
+		return
+	}
+	defer logfile.Close()
+	logger := log.New(logfile, "", log.Ldate | log.Ltime | log.Lshortfile)
+
+snippet interface
+	type ${1:InterfaceName} interface {
+		${2:FuncName}(${3:param} ${4:type}) (${5:return_type})
+	}
+
+snippet http_server
+	s := &http.Server{
+		Addr:           ":8080",
+		Handler:        ${1:handler}
+	}
+	log.Fatal(s.ListenAndServe())
+
+snippet hh
+	http.Handle("/${1:path}", &${2:handler}{})
+
+	type $2 struct {
+	}
+	func (s *$2) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
+		${3}
+	}
+
+snippet fmtp
+	fmt.Printf("%${1}\n", ${2})
+
+snippet fmtsp
+	fmt.Sprintf("%${1}\n", ${2})
+
+snippet fmtfp
+	fmt.Fprintf("%${1}\n", ${2})
+
+snippet `
+	\`xml:"${1}"\`
+snippet for
+	for _, ${1} := range ${2} {
+	}
+
+snippet mkarr
+	make([]${1}, ${2}, ${3})
+snippet mkmap
+	make(map[${1}] ${2})
+
+snippet dbq
+	q := ""
+	if rows, err := conn.Query(q); err == nil {
+		defer rows.Close()
+		for rows.Next() {
+		}
+	} else {
+		return err
+	}
+
+snippet append
+	${1:list} = append($1, ${2})
+
+snippet runtest
+	ut.RunTestCases(t,
+	func() () {return },
+	ut.TCase{[]ut.TInput {  }, []ut.TExpect{ ut.Equal() }},
+	)
+
