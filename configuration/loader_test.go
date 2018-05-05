@@ -4,6 +4,11 @@ import (
 	"testing"
 )
 
+type TestConfig struct {
+	LocalFilePath  string
+	OutputFilePath string
+}
+
 func TestLoadFromJson(t *testing.T) {
 	input := `{
 	"LocalFilePath": "/tmp/data/uploads",
@@ -11,7 +16,7 @@ func TestLoadFromJson(t *testing.T) {
 	"FSTDir" : "/tmp/fast-style-transfer"
 } `
 
-	config := &TransformerConfig{}
+	config := &TestConfig{}
 	if e := LoadFromJson([]byte(input), config); e != nil {
 		t.Log(e)
 		t.Fail()
@@ -25,4 +30,3 @@ func TestLoadFromJson(t *testing.T) {
 		t.Fail()
 	}
 }
-
