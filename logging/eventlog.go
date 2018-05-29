@@ -12,13 +12,17 @@ import (
 var eventLog = log.New(os.Stdout, "", 0)
 
 type EventLogEntry struct {
-	id        string
-	timestamp int64
-	event     interface{}
+	Id        string
+	Timestamp int64
+	Event     interface{}
+}
+
+type LoggableEvent interface {
+	ToLogRecord() string
 }
 
 func newEventLogEntry(e interface{}) *EventLogEntry {
-	entry := &EventLogEntry{id: uuid.NewV4().String(), timestamp: time.Now().UnixNano(), event: e}
+	entry := &EventLogEntry{Id: uuid.NewV4().String(), Timestamp: time.Now().UnixNano(), Event: e}
 	return entry
 }
 
@@ -29,7 +33,13 @@ func SetOutput(w io.Writer) {
 
 // EventLog logs an event defined by caller in json format
 func LogEvent(event interface{}) {
-	entry := newEventLogEntry(event)
+	var entry *EventLogEntry
+	if le, ok := event.(LoggableEvent); ok {
+		// allows user to customize the information to be logged
+		entry = newEventLogEntry(le.ToLogRecord())
+	} else {
+		entry = newEventLogEntry(event)
+	}
 	logJson, e := json.Marshal(entry)
 	if e != nil {
 		eventLog.Printf("{error: %s}\n", e.Error())
