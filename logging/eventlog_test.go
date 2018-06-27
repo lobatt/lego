@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/stretchr/testify/assert"
+	"os"
 	"regexp"
 	"testing"
 )
@@ -18,6 +19,13 @@ type TestEvent struct {
 	ResponseCode int
 }
 
+var testEvent = &TestEvent{URL: "http://github.com", Method: "POST", Body: []byte("Hello"), ResponseCode: 200}
+
+func ExampleLogEvent() {
+	SetOutput(os.Stdout)
+	LogEvent(testEvent)
+}
+
 func TestNewEventLogEntry(t *testing.T) {
 	entry := newEventLogEntry(nil)
 	assert.Regexp(t, regexp.MustCompile(UUIDV4Pattern), entry.Id, "id should be an UUID V4 string")
@@ -28,7 +36,6 @@ func TestLogEvent(t *testing.T) {
 	var buf []byte
 	var b = bytes.NewBuffer(buf)
 	SetOutput(b)
-	testEvent := &TestEvent{URL: "http://github.com", Method: "POST", Body: []byte("Hello"), ResponseCode: 200}
 	LogEvent(testEvent)
 
 	assert.Regexp(t,
@@ -40,7 +47,6 @@ func TestLogEventMultiple(t *testing.T) {
 	var buf []byte
 	var b = bytes.NewBuffer(buf)
 	SetOutput(b)
-	testEvent := &TestEvent{URL: "http://github.com", Method: "POST", Body: []byte("Hello"), ResponseCode: 200}
 	LogEvent(testEvent)
 	LogEvent(testEvent)
 
@@ -54,5 +60,4 @@ func TestLogEventMultiple(t *testing.T) {
 	assert.Regexp(t,
 		regexp.MustCompile(
 			fmt.Sprintf(`{"id":"%s","timestamp":%s,"event":{"URL":"http://github.com","Method":"POST","Body":"SGVsbG8=","ResponseCode":200}}`, UUIDV4Pattern, TimestampPattern)), line2)
-
 }
