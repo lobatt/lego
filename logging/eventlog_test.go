@@ -22,8 +22,9 @@ type TestEvent struct {
 var testEvent = &TestEvent{URL: "http://github.com", Method: "POST", Body: []byte("Hello"), ResponseCode: 200}
 
 func ExampleLogEvent() {
+	exampleEvent := &TestEvent{URL: "http://github.com", Method: "GET", ResponseCode: 200}
 	SetOutput(os.Stdout)
-	LogEvent(testEvent)
+	LogEvent(exampleEvent)
 }
 
 func TestNewEventLogEntry(t *testing.T) {

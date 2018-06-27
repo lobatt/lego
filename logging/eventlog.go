@@ -17,6 +17,8 @@ type EventLogEntry struct {
 	Event     interface{} `json:"event"`
 }
 
+// LoggableEvent is a interface with only one function `ToLogRecord`
+// which let user customize the information they want to put in event logging.
 type LoggableEvent interface {
 	ToLogRecord() string
 }
