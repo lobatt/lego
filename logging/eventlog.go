@@ -12,9 +12,9 @@ import (
 var eventLog = log.New(os.Stdout, "", 0)
 
 type EventLogEntry struct {
-	Id        string
-	Timestamp int64
-	Event     interface{}
+	Id        string      `json:"id"`
+	Timestamp int64       `json:"timestamp"`
+	Event     interface{} `json:"event"`
 }
 
 type LoggableEvent interface {
