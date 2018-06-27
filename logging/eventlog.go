@@ -33,7 +33,7 @@ func SetOutput(w io.Writer) {
 	eventLog.SetOutput(w)
 }
 
-// EventLog logs an event defined by caller in json format
+// EventLog logs an event defined by caller's struct and output it in JSON format
 func LogEvent(event interface{}) {
 	var entry *EventLogEntry
 	if le, ok := event.(LoggableEvent); ok {
